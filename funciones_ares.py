@@ -137,5 +137,3 @@ def menu_filtrar_paises():
             break
         else:
             print("Opción inválida")
-
-buscar_pais()
