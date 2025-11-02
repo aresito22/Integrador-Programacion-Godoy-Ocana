@@ -18,13 +18,13 @@ def buscar_pais():
                 if (fila[0]).lower() == pais_buscar:
                     pais_encontrado = True
                     print(fila[0])
-                    print(f"Población: {fila[1]}")
-                    print(f"Superficie: {fila[2]} km^2\n")
+                    print(f"Población: {fila[1]:,}")
+                    print(f"Superficie: {fila[2]:,.0f} km^2\n")
                 elif pais_buscar in (fila[0]).lower():
                     pais_encontrado = True
                     print(fila[0])
-                    print(f"Población: {fila[1]}")
-                    print(f"Superficie: {fila[2]} km^2\n")
+                    print(f"Población: {fila[1]:,}")
+                    print(f"Superficie: {fila[2]:,.0f} km^2\n")
 
     if not pais_encontrado:
         print("País no encontrado.\n")                    
@@ -43,8 +43,8 @@ def filtrar_por_continente():
             if fila and fila[3] == continente_filtrar:
                 continente_encontrado = True
                 print(fila[0])
-                print(f"Población: {fila[1]}")
-                print(f"Superficie: {fila[2]} km^2\n")
+                print(f"Población: {fila[1]:,}")
+                print(f"Superficie: {fila[2]:,.0f} km^2\n")
 
     if not continente_encontrado:
         print("Continente no encontrado.\n")
@@ -76,8 +76,8 @@ def filtrar_rango_poblacion():
                 if limite_superior > int(fila[1]) > limite_inferior:
                     pais_encontrado = True
                     print(fila[0])
-                    print(f"Población: {fila[1]}")
-                    print(f"Superficie: {fila[2]} km^2\n") 
+                    print(f"Población: {fila[1]:,}")
+                    print(f"Superficie: {fila[2]:,.0f} km^2\n") 
 
     if not pais_encontrado:
         print("No se encontró ningún país dentro del rango.\n")

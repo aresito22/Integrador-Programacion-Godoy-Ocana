@@ -41,5 +41,3 @@ def mostrar_estadisticas():
     print("Cantidad de países por continente:")
     for cont, cant in continentes.items():
         print(f"   {cont}: {cant}")
-
-mostrar_estadisticas()

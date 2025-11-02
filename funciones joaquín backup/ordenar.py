@@ -1,8 +1,6 @@
 import csv
 
 def ordenar_paises():
-
-
     paises = []
     try:
         with open("paises.csv", newline='', encoding='utf-8') as archivo:
@@ -45,5 +43,3 @@ def ordenar_paises():
     print("=== RESULTADO ORDENADO ===")
     for p in paises:
         print(f"{p['nombre']} - {p['poblacion']} hab - {p['superficie']} km² - {p['continente']}")
-
-ordenar_paises()

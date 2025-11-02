@@ -1,10 +1,8 @@
 import csv
 
 def agregar_pais():
-    
-
     print("=== AGREGAR NUEVO PAÍS ===")
-#ingresar el nombre, población. superficie y continente del pais agregado
+    #ingresar el nombre, población. superficie y continente del pais agregado
     nombre = input("Nombre del país: ").strip()
     poblacion = input("Población: ").strip()
     superficie = input("Superficie (km²): ").strip()
@@ -27,6 +25,3 @@ def agregar_pais():
         escritor.writerow([nombre, poblacion, superficie, continente])
 
     print(f"{nombre} fue agregado al archivo")
-
-
-agregar_pais()
