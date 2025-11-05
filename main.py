@@ -1,6 +1,5 @@
-if __name__ == '__main__':
-    import funciones
-
+import funciones
+while True:
     print("=== MENÚ ===")
     print("    |1| Buscar un país")
     print("    |2| Filtrar países")
@@ -11,17 +10,17 @@ if __name__ == '__main__':
     opt = input("Opción: ")
     print()
 
-    while True:
-        if opt == '1':
-            funciones.buscar_pais()
-        elif opt == '2':
-            funciones.menu_filtrar_paises()
-        elif opt == '3':
-            funciones.ordenar_paises()
-        elif opt == '4':
-            funciones.mostrar_estadisticas()
-        elif opt == '5':
-            print("Saliendo...")
-            break
-        else:
-            print("Opción inválida.")
+
+    if opt == '1':
+        funciones.buscar_pais()
+    elif opt == '2':
+        funciones.menu_filtrar_paises()
+    elif opt == '3':
+        funciones.ordenar_paises()
+    elif opt == '4':
+        funciones.mostrar_estadisticas()
+    elif opt == '5':
+        print("Saliendo...")
+        break
+    else:
+        print("Opción inválida.\n")

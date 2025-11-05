@@ -21,21 +21,22 @@ def buscar_pais():
                 if (fila[0]).lower() == pais_buscar:
                     pais_encontrado = True
                     print(fila[0])
-                    print(f"Población: {fila[1]:,}")
-                    print(f"Superficie: {fila[2]:,.0f} km^2\n")
+                    print(f"Población: {int(fila[1]):,}")
+                    print(f"Superficie: {float(fila[2]):,.0f} km^2\n")
                 # Comprueba coincidencia parcial (si el termino esta contenido)
-                elif pais_buscar in (fila[0]).lower():
+                elif ((fila[0]).lower()).startswith(pais_buscar):
                     pais_encontrado = True
                     print(fila[0])
-                    print(f"Población: {fila[1]:,}")
-                    print(f"Superficie: {fila[2]:,.0f} km^2\n")
+                    print(f"Población: {int(fila[1]):,}")
+                    print(f"Superficie: {float(fila[2]):,.0f} km^2\n")
 
     if not pais_encontrado:
         print("País no encontrado.")                    
 
 def filtrar_por_continente():
     # Solicita y formatea el nombre del continente (primera letra mayuscula)
-    continente_filtrar = input("Nombre del continente a filtrar: ")
+    continente_filtrar = input("\nNombre del continente a filtrar: ")
+    utilidades.normalizar_caracteres(continente_filtrar)
     continente_filtrar = continente_filtrar.strip()
     continente_filtrar = continente_filtrar.capitalize()
     print()
@@ -49,11 +50,11 @@ def filtrar_por_continente():
             if fila and fila[3] == continente_filtrar:
                 continente_encontrado = True
                 print(fila[0])
-                print(f"Población: {fila[1]:,}")
-                print(f"Superficie: {fila[2]:,.0f} km^2\n")
+                print(f"Población: {int(fila[1]):,}")
+                print(f"Superficie: {float(fila[2]):,.0f} km^2\n")
 
     if not continente_encontrado:
-        print("Continente no encontrado.")
+        print("\nContinente no encontrado.\n")
 
 def filtrar_rango_poblacion():
     # Bucle de validacion de entrada para los limites del rango
@@ -88,8 +89,8 @@ def filtrar_rango_poblacion():
                 if limite_superior > int(fila[1]) > limite_inferior:
                     pais_encontrado = True
                     print(fila[0])
-                    print(f"Población: {fila[1]:,}")
-                    print(f"Superficie: {fila[2]:,.0f} km^2\n") 
+                    print(f"Población: {int(fila[1]):,}")
+                    print(f"Superficie: {float(fila[2]):,.0f} km^2\n") 
 
     if not pais_encontrado:
         print("No se encontró ningún país dentro del rango.")
@@ -127,8 +128,8 @@ def filtrar_rango_superficie():
                 if limite_superior > int(fila[2]) > limite_inferior:
                     pais_encontrado = True
                     print(fila[0])
-                    print(f"Población: {fila[1]:,}")
-                    print(f"Superficie: {fila[2]:,.0f} km^2\n") 
+                    print(f"Población: {int(fila[1]):,}")
+                    print(f"Superficie: {float(fila[2]):,.0f} km^2\n") 
 
     if not pais_encontrado:
         print("No se encontró ningún país dentro del rango.")
@@ -145,7 +146,7 @@ def menu_filtrar_paises():
         print("    |3| Rango de superficie")
         print("    |4| Salir")
 
-        opt = input("Opción: ")
+        opt = input("\nOpción: ")
         print()
 
         if opt == '1':
@@ -170,12 +171,12 @@ def agregar_pais():
 
     print()
 
-    # Validacion basica de campos vacios
+    # Validación basica de campos vacios
     if not (nombre and poblacion and superficie and continente):
         print("Inválido - todos los campos son obligatorios.")
         return # Termina la funcion si faltan datos
 
-    # Validacion de tipos numericos
+    # Validación de tipos numericos
     try:
         poblacion = int(float(poblacion)) # Permite decimales en input, pero guarda entero
         superficie = float(superficie)
@@ -183,7 +184,6 @@ def agregar_pais():
         print("Población o superficie inválidas.")
         return
 
-    # Abre el archivo en modo 'append' (agregar al final)
     with open("paises.csv", "a", newline="", encoding="utf-8") as archivo:
         escritor = csv.writer(archivo)
         # Escribe la nueva fila
@@ -241,7 +241,7 @@ def mostrar_estadisticas():
 
     print("Cantidad de países por continente:")
     for continente, cantidad in sorted(continentes.items()):
-        print(f"    {continente}: {cantidad}")
+        print(f"    {continente}: {cantidad}\n")
 
 def ordenar_paises():
     paises = []
