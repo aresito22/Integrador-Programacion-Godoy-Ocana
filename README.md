@@ -193,5 +193,5 @@ funcionar, requiere:
 
 ## Participación de los integrantes
 
--   Joaquín Godoy\
+-   Joaquín Godoy
 -   Ares Martín Ocaña
