@@ -34,66 +34,79 @@ def buscar_pais():
         print("País no encontrado.")                    
 
 def filtrar_por_continente():
-    # Solicita y formatea el nombre del continente (primera letra mayuscula)
     continente_filtrar = input("\nNombre del continente a filtrar: ")
-    utilidades.normalizar_caracteres(continente_filtrar)
-    continente_filtrar = continente_filtrar.strip()
-    continente_filtrar = continente_filtrar.capitalize()
+    continente_filtrar = utilidades.normalizar_caracteres(continente_filtrar)
+    continente_filtrar = continente_filtrar.strip().capitalize()
     print()
-    
+
+    # Lista de continentes válidos (normalizados)
+    continentes_validos = ["America", "Europa", "Asia", "Africa", "Oceania"]
+
+    # Validación
+    if continente_filtrar not in continentes_validos:
+        print("Continente inválido.\n")
+        return
+
     continente_encontrado = False
 
     with open("paises.csv", "r", newline="", encoding="utf-8") as archivo:
         lector = csv.reader(archivo)
+        next(lector)  # Omitir encabezado
+
         for fila in lector:
-            # Comprueba si la columna 3 (continente) coincide
-            if fila and fila[3] == continente_filtrar:
-                continente_encontrado = True
-                print(fila[0])
-                print(f"Población: {int(fila[1]):,}")
-                print(f"Superficie: {float(fila[2]):,.0f} km^2\n")
+            if fila:
+                # Normalizar el continente del CSV
+                continente_csv = utilidades.normalizar_caracteres(fila[3]).capitalize()
+
+                # Comparación ya normalizada
+                if continente_csv == continente_filtrar:
+                    continente_encontrado = True
+                    print(fila[0])
+                    print(f"Población: {int(fila[1]):,}")
+                    print(f"Superficie: {float(fila[2]):,.0f} km^2\n")
 
     if not continente_encontrado:
-        print("\nContinente no encontrado.\n")
+        print("No se encontraron países en ese continente.\n")
+
 
 def filtrar_rango_poblacion():
-    # Bucle de validacion de entrada para los limites del rango
-    while True:
-        try:
-            print("Filtrando por población:")
-            limite_inferior = int(input("Ingrese el límite inferior del rango: "))
-            limite_superior = int(input("Ingrese el límite superior del rango: "))
+    print("Filtrando por población:")
 
-            # Validaciones logicas del rango
-            if limite_inferior < 0 or limite_superior < 0:
-                print("Inválido - los límites no pueden ser menores a 0.")
-                print()
-            elif limite_superior < limite_inferior:
-                print("Inválido - el límite superior no puede ser menor al límite inferior.")
-                print()
-        except ValueError:
-            print("Inválido - los valores deben ser un número entero.")
-            print()
-        else:
-            break # Sale del bucle si la entrada es valida
+    # Validación del rango
+    try:
+        limite_inferior = int(input("Ingrese el límite inferior del rango: "))
+        limite_superior = int(input("Ingrese el límite superior del rango: "))
+
+        if limite_inferior < 0 or limite_superior < 0:
+            print("Inválido - los límites no pueden ser menores a 0.\n")
+            return   
+
+        if limite_superior < limite_inferior:
+            print("Inválido - el límite superior no puede ser menor al límite inferior.\n")
+            return   
+
+    except ValueError:
+        print("Inválido - los valores deben ser un número entero.\n")
+        return   
 
     pais_encontrado = False
     print()
 
     with open("paises.csv", "r", newline="", encoding="utf-8") as archivo:
         lector = csv.reader(archivo)
-        next(lector) # Omite encabezado
+        next(lector)  # Salta encabezado
         for fila in lector:
             if fila:
-                # Comprueba si la poblacion (columna 1) esta dentro del rango
-                if limite_superior > int(fila[1]) > limite_inferior:
+                poblacion = int(fila[1])
+                if limite_inferior < poblacion < limite_superior:
                     pais_encontrado = True
                     print(fila[0])
-                    print(f"Población: {int(fila[1]):,}")
-                    print(f"Superficie: {float(fila[2]):,.0f} km^2\n") 
+                    print(f"Población: {poblacion:,}")
+                    print(f"Superficie: {float(fila[2]):,.0f} km^2\n")
 
     if not pais_encontrado:
-        print("No se encontró ningún país dentro del rango.")
+        print("No se encontró ningún país dentro del rango.\n")
+
 
 def filtrar_rango_superficie():
     # Bucle de validacion de entrada para los limites (admite decimales)
@@ -137,8 +150,6 @@ def filtrar_rango_superficie():
 def menu_filtrar_paises():
     # Bucle principal del menu
     while True:
-        print()
-        # Muestra el sub-menu de opciones de filtrado
         print("===MENÚ===")
         print("Filtrar por:")
         print("    |1| Continente")
@@ -147,7 +158,6 @@ def menu_filtrar_paises():
         print("    |4| Salir")
 
         opt = input("\nOpción: ")
-        print()
 
         if opt == '1':
             filtrar_por_continente()
@@ -158,90 +168,7 @@ def menu_filtrar_paises():
         elif opt == '4':
             break # Regresa al menu principal
         else:
-            print("Opción inválida")
-
-def agregar_pais():
-    print("=== AGREGAR NUEVO PAÍS ===")
-
-    # Recopila los datos del nuevo pais
-    nombre = input("Nombre del país: ").strip().capitalize()
-    poblacion = input("Población: ").strip()
-    superficie = input("Superficie (km^2): ").strip()
-    continente = input("Continente: ").strip().capitalize()
-
-    print()
-
-    # Validación basica de campos vacios
-    if not (nombre and poblacion and superficie and continente):
-        print("Inválido - todos los campos son obligatorios.")
-        return # Termina la funcion si faltan datos
-
-    # Validación de tipos numericos
-    try:
-        poblacion = int(float(poblacion)) # Permite decimales en input, pero guarda entero
-        superficie = float(superficie)
-    except ValueError:
-        print("Población o superficie inválidas.")
-        return
-
-    with open("paises.csv", "a", newline="", encoding="utf-8") as archivo:
-        escritor = csv.writer(archivo)
-        # Escribe la nueva fila
-        escritor.writerow([nombre, poblacion, superficie, continente])
-
-    print(f"{nombre} fue agregado correctamente.")
-
-def mostrar_estadisticas():
-    paises = [] # Lista para almacenar los datos leidos
-
-    try:
-        # Lee el archivo usando DictReader para facilitar el acceso por nombre de columna
-        with open("paises.csv", newline="", encoding="utf-8") as archivo:
-            lector = csv.DictReader(archivo)
-            for fila in lector:
-                try:
-                    # Convierte y almacena los datos de cada fila
-                    paises.append({
-                        "nombre": fila.get("nombre", "").strip(),
-                        "poblacion": int(float(fila.get("poblacion", 0))),
-                        "superficie": float(fila.get("superficie", 0)),
-                        "continente": fila.get("continente", "").strip().capitalize()
-                    })
-                except (ValueError, TypeError):
-                    # Omite filas con datos numericos invalidos
-                    continue
-    except FileNotFoundError:
-        print("No se encontró el archivo paises.csv.")
-        return
-
-    # Comprueba si se cargaron datos
-    if not paises:
-        print("No hay datos para analizar.")
-        return
-
-    # Calculos estadisticos
-    pais_mayor = max(paises, key=lambda p: p["poblacion"])
-    pais_menor = min(paises, key=lambda p: p["poblacion"])
-
-    prom_pob = sum(p["poblacion"] for p in paises) / len(paises)
-    prom_sup = sum(p["superficie"] for p in paises) / len(paises)
-
-    # Conteo de paises por continente
-    continentes = {}
-    for p in paises:
-        c = p["continente"] or "Desconocido" # Agrupa continentes vacios
-        continentes[c] = continentes.get(c, 0) + 1
-
-    # Muestra los resultados
-    print("=== ESTADÍSTICAS ===")
-    print(f"    Mayor población: {pais_mayor['nombre']} ({pais_mayor['poblacion']:,} habitantes)")
-    print(f"    Menor población: {pais_menor['nombre']} ({pais_menor['poblacion']:,} habitantes)")
-    print(f"    Promedio de población: {prom_pob:,.0f} habitantes")
-    print(f"    Promedio de superficie: {prom_sup:,.0f} km^2\n")
-
-    print("Cantidad de países por continente:")
-    for continente, cantidad in sorted(continentes.items()):
-        print(f"    {continente}: {cantidad}\n")
+            print("Opción inválida.\n")
 
 def ordenar_paises():
     paises = []
@@ -319,3 +246,55 @@ def ordenar_paises():
         print(f"    Población: {poblacion:,}")
         print(f"    Superficie: {superficie:,.0f} km^2")
         print(f"    Continente: {continente}\n")
+
+def mostrar_estadisticas():
+    paises = [] # Lista para almacenar los datos leidos
+
+    try:
+        # Lee el archivo usando DictReader para facilitar el acceso por nombre de columna
+        with open("paises.csv", newline="", encoding="utf-8") as archivo:
+            lector = csv.DictReader(archivo)
+            for fila in lector:
+                try:
+                    # Convierte y almacena los datos de cada fila
+                    paises.append({
+                        "nombre": fila.get("nombre", "").strip(),
+                        "poblacion": int(float(fila.get("poblacion", 0))),
+                        "superficie": float(fila.get("superficie", 0)),
+                        "continente": fila.get("continente", "").strip().capitalize()
+                    })
+                except (ValueError, TypeError):
+                    # Omite filas con datos numericos invalidos
+                    continue
+    except FileNotFoundError:
+        print("No se encontró el archivo paises.csv.")
+        return
+
+    # Comprueba si se cargaron datos
+    if not paises:
+        print("No hay datos para analizar.")
+        return
+
+    # Calculos estadisticos
+    pais_mayor = max(paises, key=lambda p: p["poblacion"])
+    pais_menor = min(paises, key=lambda p: p["poblacion"])
+
+    prom_pob = sum(p["poblacion"] for p in paises) / len(paises)
+    prom_sup = sum(p["superficie"] for p in paises) / len(paises)
+
+    # Conteo de paises por continente
+    continentes = {}
+    for p in paises:
+        c = p["continente"] or "Desconocido" # Agrupa continentes vacios
+        continentes[c] = continentes.get(c, 0) + 1
+
+    # Muestra los resultados
+    print("=== ESTADÍSTICAS ===")
+    print(f"    Mayor población: {pais_mayor['nombre']} ({pais_mayor['poblacion']:,} habitantes)")
+    print(f"    Menor población: {pais_menor['nombre']} ({pais_menor['poblacion']:,} habitantes)")
+    print(f"    Promedio de población: {prom_pob:,.0f} habitantes")
+    print(f"    Promedio de superficie: {prom_sup:,.0f} km^2\n")
+
+    print("Cantidad de países por continente:")
+    for continente, cantidad in sorted(continentes.items()):
+        print(f"    {continente}: {cantidad}\n")

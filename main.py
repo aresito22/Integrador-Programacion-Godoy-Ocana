@@ -1,4 +1,5 @@
 import funciones
+
 while True:
     print("=== MENÚ ===")
     print("    |1| Buscar un país")
