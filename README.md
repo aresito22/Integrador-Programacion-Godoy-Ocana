@@ -209,5 +209,5 @@ funcionar, requiere:
 
 ## Participación de los integrantes
 
--   Joaquín Godoy
--   Ares Martín Ocaña
+-   Joaquín Godoy: Función de filtros, muestra de estadísticas, y agregar país/Menúes/Colaboración en documentación
+-   Ares Martín Ocaña: Funcion de buscar país y funciones de filtro/Estandarización de estilo/Validaciones/Colaboración en documentación 
