@@ -136,7 +136,7 @@ def filtrar_rango_superficie():
             if fila:
                 # Comprueba si la superficie (columna 2) esta dentro del rango
                 # Nota: convierte la superficie del CSV a int para comparar
-                if limite_superior > int(fila[2]) > limite_inferior:
+                if limite_superior > float(fila[2]) > limite_inferior:
                     pais_encontrado = True
                     print(fila[0])
                     print(f"Población: {int(fila[1]):,}")
