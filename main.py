@@ -6,11 +6,11 @@ while True:
     print("    |2| Filtrar países")
     print("    |3| Ordenar países")
     print("    |4| Mostrar estadísticas")
-    print("    |5| Salir\n")
+    print("    |5| Agregar país")
+    print("    |6| Salir\n")
 
     opt = input("Opción: ")
     print()
-
 
     if opt == '1':
         funciones.buscar_pais()
@@ -21,6 +21,8 @@ while True:
     elif opt == '4':
         funciones.mostrar_estadisticas()
     elif opt == '5':
+        funciones.agregar_pais()
+    elif opt == '6':
         print("Saliendo...")
         break
     else:

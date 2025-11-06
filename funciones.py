@@ -68,7 +68,6 @@ def filtrar_por_continente():
     if not continente_encontrado:
         print("No se encontraron países en ese continente.\n")
 
-
 def filtrar_rango_poblacion():
     print("Filtrando por población:")
 
@@ -106,7 +105,6 @@ def filtrar_rango_poblacion():
 
     if not pais_encontrado:
         print("No se encontró ningún país dentro del rango.\n")
-
 
 def filtrar_rango_superficie():
     # Bucle de validacion de entrada para los limites (admite decimales)
@@ -298,3 +296,52 @@ def mostrar_estadisticas():
     print("Cantidad de países por continente:")
     for continente, cantidad in sorted(continentes.items()):
         print(f"    {continente}: {cantidad}\n")
+
+def agregar_pais():
+    print("=== AGREGAR NUEVO PAÍS ===")
+
+    # Recopila los datos del nuevo pais
+    nombre = input("Nombre del país: ").strip().capitalize()
+    poblacion = input("Población: ").strip()
+    superficie = input("Superficie (km^2): ").strip()
+    continente = input("Continente: ").strip().capitalize()
+
+    print()
+
+    # ----- VALIDACIONES -----
+
+    if not (nombre and poblacion and superficie and continente):
+        print("Inválido - todos los campos son obligatorios.\n")
+        return # Termina la funcion si faltan datos
+
+    pais_invalido = False
+    for c in nombre:
+        if not (c.isalpha() or c.isspace()):
+            pais_invalido = True
+
+    if pais_invalido:
+        print("Inválido - El nombre del país no puede contener números o caracteres especiales.\n")
+        return
+
+    continente_invalido = False
+    for c in continente:
+        if not (c.isalpha() or c.isspace()):
+            continente_invalido = True
+
+    if continente_invalido:
+        print("Inválido - El nombre del continente no puede contener números o caracteres especiales.\n")
+        return
+
+    try:
+        poblacion = int(float(poblacion)) # Permite decimales en input, pero guarda entero
+        superficie = float(superficie)
+    except ValueError:
+        print("Población o superficie inválidas.\n")
+        return
+
+    # Abre el archivo en modo 'append' (agregar al final)
+    with open("paises.csv", "a", newline="", encoding="utf-8") as archivo:
+        escritor = csv.writer(archivo)
+        # Escribe la nueva fila
+        escritor.writerow([nombre, poblacion, superficie, continente])
+        print("País añadido exitosamente.\n")

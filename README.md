@@ -191,6 +191,21 @@ funcionar, requiere:
 
 ------------------------------------------------------------------------
 
+### Ejemplo 5: Agregar país
+
+**Entrada:**
+    === AGREGAR NUEVO PAÍS ===
+    Nombre del país: Imperio Godoycruceño
+    Población: 93517351
+    Superficie (km^2): 105677432
+    Continente: América
+
+**Salida:**
+
+    País añadido exitosamente. # Se agrega el país con sus atributos al CSV
+
+------------------------------------------------------------------------
+
 ## Participación de los integrantes
 
 -   Joaquín Godoy
